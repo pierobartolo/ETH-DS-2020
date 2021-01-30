@@ -43,7 +43,10 @@ $\mathcal{R}^{km}(c,\mu_i \forall i) = \sum_x \norm{x-\mu_{c(x)}}^2$\\
 	   $\gamma_{xc}\doteq\mathbbm{E}\left[M_{xc}\vert X, \theta^j\right] = 
 	   \frac{p(X\vert c, \theta^j), p(c\vert\theta^j)}{p(x\vert \theta^j)} = 
 	   \frac{N(\mu^j_c,\sigma^{2\,j}_c)\pi_c^j}{\sum_\nu \pi_\nu N(\mu_\nu, \sigma^{2\,j}_{\nu})}$ \\
-	   $Q(\theta, \theta_j)=\mathbbm{E}\left[L(X,X_L\vert \theta)\vert \theta_j \right] = 
+	   $Q(\theta, \theta^j)=\mathbbm{E}\left[
+	   \sum_{i} \log{p(x_i,z_i | \theta)]}
+	   
+	   \right] = 
 	   \sum_{x \in X} \sum_{c} \left(\gamma_{xc} \log(\pi_c P(x\vert \theta_c))\right)$\\
 	   M-step: 
 	   $\theta_{j+1} = \argmax_\theta Q(\theta, \theta_j)$\\

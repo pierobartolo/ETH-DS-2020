@@ -1,5 +1,6 @@
 \section{Nonparametric Bayesian methods}
-$Dir(x|\alpha) = \frac{1}{B(\alpha)} \prod_{k=1}^n x_k^{a_k - 1}$, $B(\alpha) = \frac{\prod_{k=1}^n \Gamma(\alpha_k)}{\Gamma(\sum_{k=1}^n \alpha_k)}$ 
+$\beta(x|a,b) = \frac{x^{(a-1)}\cdot (1-x)^{(b-1)}}{B(a,b)}$, $B(\alpha) = \frac{\prod_{k=1}^n \Gamma(\alpha_k)}{\Gamma(\sum_{k=1}^n \alpha_k)}$
+$Dir(x|\alpha) = \frac{1}{B(\alpha)} \prod_{k=1}^n x_k^{a_k - 1}$ 
 \subsection*{Chinese Restourant Process}
 \(
    p(\text{cust}_{n+1} \text{ joins table } \tau\vert\mathcal{P})=
@@ -10,7 +11,7 @@ $Dir(x|\alpha) = \frac{1}{B(\alpha)} \prod_{k=1}^n x_k^{a_k - 1}$, $B(\alpha) = 
 \)\\ 
 de Finetti: $p(X_1, ..., X_n) {=} \int (\prod_{i=1}^n p(x_i|G))dP(G)$ \\
 Stick breaking: $\rho = \left\{\rho_i\right\}_{i \in \mathbb{N}} \sim GEM(\alpha)$ if:\\
-$\rho_k = \beta_k\left(1-\sum_{i=1}^{k-1}\rho_k\right)$.\\
+$\rho_k = \beta_k\left(1-\sum_{i=1}^{k-1}\rho_k\right)$Higher $\alpha$, smaller pieces \\
 Then $G(\theta)=\sum_{i=1}^{\infty}\rho_k \delta_{\theta_k}(\theta),\;\theta_k\sim H$\\
 $\Rightarrow G\sim DP(\alpha,H)$
 \subsection*{Gibbs Sampling}

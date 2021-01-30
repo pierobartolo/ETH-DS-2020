@@ -6,29 +6,26 @@ Cross-entropy (log loss): ($y'=\tfrac{(1+y)}{2}$ and $z'=\tfrac{(1+z)}{2}$) $L(y
 Hinge Loss: $L(y,z) = max(0, 1-yz)$ \\
 Perceptron Loss: $L(y,z) = max(0, -yz)$ \\
 Logistic loss: $L(y,z) = log(1 + exp(-yz))$ \\
-Square loss: $L(y,z) = \tfrac{1}{2}(1-yz)^2$ \\
+Square loss: $L(y,z) = \tfrac{1}{2}(y-z)^2$ \\
 Exponential loss: $L(y,z) = exp(-yz)$ \\
-Binomial deviance: $L(y,z) = 1 + exp(-2yz)$ \\
-0/1 Loss: $L(y,z) = \mathbb{I}\{sign(z)\neq y\}$ 
-\subsection*{Probabilistic generative approach}
-\( c^{*}=\argmin_c \mathcal{R}(c) \Rightarrow c^{*}(x) = \argmin_a \sum_y p(y\vert x)L(y,a)\) \\where \(p(y\vert x) \) is found from \(p(y,x)\) which is itself estimated somehow
+0/1 Loss: $L(y,z) = \mathbb{I}\{z \neq y\}$ 
 
-\subsection*{Probabilistic discriminative approach}
-Like Probabilistic generative approach but we estimate \(p(y\vert x)\) directly. \\\(p(y\vert x)=\argmax_w \mathcal{L}(\mathcal{Z}_{train}, w)= \argmax_w\sum_i\log{p(y_i\vert x_i, w)}\) where \(p(y\vert x; w) = \sigma(w^Tx + w_0)\). We can gradient descent on \(-\mathcal{L}\)
 
-\subsection*{Discriminative approach}
-Directly look for:\\ \(c^{*} = \argmin_c\hat{\mathcal{R}}(c, \mathcal{Z}_{train}) = \argmin_c \frac{1}{n}\sum_{i=1}^{n}L(y_i, c(x_i))\)
 
-\subsection*{Percepton Algo} 
-Find \(w, w_0\) s.t. \(y_iw^tx_i > 0 \;\forall i\). Gradient descent on \(L(y,c(x))=-yw^Tx\mathbb{I}_{\left(-\inf, 0\right)}\left(yw^Tx\right)\)\\
-or {\scriptsize $L(y,c(x)) = \min_{\alpha_{1:n}} \sum_{i=1}^n \max  [0,- \sum_{j=1}^n \alpha_j y_i y_j x_i^T x_j ]$}
-$\Rightarrow \nabla_w L(y_{1:n},c(x_{1:n})) = -\sum_{i \text{ misscl.}}y_ix_i$
+\subsection*{Perceptron Algo} 
+Classifier $c(x) = \sign{w^Tx + w_0}$.
+Loss $\mathcal{L}(w) = \sum_{i: y_iw^Tx_i < 0} -y_iw^T x_i$.
+Train using (S)GD. Converges if data is linearly separable, and
+learning rate $\eta(k) \geq 0$, $\sum_{k}\eta(k) \rightarrow \infty$ and
+$\big(\sum_{k} \eta^2(k)\big)
+/
+\big(\sum_{k} \eta(k)\big)^2
+\rightarrow 0$. Update rule (on misclassified points): $w^{(k+1)} = w^{(k)} + \eta^{(k)}x_ny_n$
 
-\subsection*{Fischer Discriminant}
-\(w^{*} = \argmax_w \frac{w^TS_Bw}{w^TS_ww} = S_w^{-1}(\bar{x}_0-\bar{x}_1)\) where: \\
-$S_B = (\bar{x}_0-\bar{x}_1)^T(\bar{x}_0-\bar{x}_1)$\\
-\(S_w=\hat{Cov}(C_0) + \hat{Cov}(C_1)\) Sample variance matrixes for each cluster.\\
-Fit a mixture of gaussians on $w^{*T}x$ insted of $x$
+\subsection*{Fisher Discriminant}
+\(w^{*} = \argmax_w \frac{w^TS_Bw}{w^TS_ww} \propto S_w^{-1}(m_2-m_1)\) where: \\
+$S_B = (m_2-m_1)(m_2-m_1)^T$\\
+$S_w= \sum_{i=1}^{2}\sum_{n \in C_i} (x_n-m_i)(x_n-m_i)^T$
 
 %\subsection*{Perceptron} 
 %Gradient descent: $a(k+1) = a(k) - \eta(k)\nabla J(a(k))$ \\

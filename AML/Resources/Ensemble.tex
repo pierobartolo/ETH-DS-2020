@@ -5,24 +5,21 @@
 We train $b^{(1)}, \dots, b^{(M)}$ different classifiers. \\
 Then \(\bar{b}(x)=
 \begin{cases}
-	\frac{1}{M}\sum_{i = 1}^n b^{(i)}(x) & \text{regression}\\
+	\frac{1}{M}\sum_{i = 1}^M b^{(i)}(x) & \text{regression}\\
 	\text{majority}\left(b^{(i)}\right)  & \text{classification}\\
 \end{cases}\)
-\textbf{Works if:} the $b^{(i)}$ are diverse and almost indipendent.
-(bootstrap is used to reduce Covariance among $b^{(i)}$)\\
+\textbf{Works if:} the $b^{(i)}$ are almost indipendent.\\
 %\textbf{Bag. aggr. pred.}: $h_B(x)=E_{D'\sim D}[h_{D'}(x)]$\\
 %\textbf{Ideal aggr. pred.}: $h_A(x)=E_{D\sim P(x,y)}[h_D(x)]$\\
 %$E_D[L(y,h_D(x))]=E_D[(y-h_D(x))^2]=E_D[y^2]-2E_D[y\cdot h_D(x)]+E_D[h_D(x)^2]=y^2-2y\cdot E_D[h_D(x)]+E_D[h_D(x)^2]\geq y^2-2y\cdot E_D[h_D(x)]+E_D[h_D(x)]^2=y^2-2y\cdot h_A(x)+h_A(x)^2=(y-h_A(x))^2=L(y,h_A(x))$\\
-\textbf{Bias$\downarrow$ \& $\mathbb{V} \uparrow$}: By using complex decision trees\\
-\textbf{$\mathbb{V}\downarrow$}: By averaging them
+Bagging classifiers worse than random chance does not achieve good results
 \subsubsection{Theorem:}
 if $|y|<\infty$ then $\exists M$ large enough s.t.\\
 $\mathbb{E}_{Z,Z',Y|x}\left[(Y-\bar{b}(x))^2\right]\leq \mathbb{E}_{Z,Z',Y|x}\left[(Y-b^{(i)}(x))\right]$
 
 \subsection*{Random Forest}
-Is a sort of bagging with decision trees. 
-At each splitting node we draw $m$ features and we pick the splitting one only among them ($\downarrow$ correletion among trees). 
-For the same reason we also use Bootstrap 
+Sample $B$ datasets $Z^{∗1},...,Z^{∗B}$ from $Z$ with replacement.
+For each $Z^{∗b}$ train a full decision tree $f^{∗b}(x)$ with one small modification:  before each split randomly subsample $k \leq d$ features and only consider these for your split.
 
 \subsection*{Adaboost}
 Boosting: Train weak learners sequentially on all data, but reweight misclassifed samples higher, Bias $\downarrow$\\
@@ -30,10 +27,11 @@ Initialize weights $w_i = 1/n$, for b=1:B do:\\
 1. Fit classifier $c_b(x)$ with weights $w_i$\\
 2. Compute error $\epsilon_b = \sum_i w_i^{(b)} \mathbbm{1}_{[c_b(x_i) \not = y_i]} / \sum_i w_i^{(b)}$\\
 3. Compute coeff. $\alpha_b = log(\frac{1-\epsilon_b}{\epsilon_b})$\\
-4. Update weights $w_i = w_i \exp(\alpha_b \mathbbm{1}_{[y_i \not = c_b(x_i)]})$
+4. Update weights $w_i = w_i \exp(-\alpha_b y_i c_b(x_i))$
+5. Normalize $w_i$ dividing by $Z = 2\sqrt{\epsilon(1-\epsilon)}$
 Return $\hat{c}_B(x) = \text{sign} \left ( \sum_{b=1}^B \alpha_b c_b(x) \right )$\\
 Loss: Exponential loss $L(y,y')=exp(-yy')$\\
-Model: Forward Sationary Adaptive.\\
+Model: Forward Stagewise Additive\\
 Oss: Self averaging algos that train Spiky interpolating classifiers.\\
 AdaBoost trains max-margin classifier.
 

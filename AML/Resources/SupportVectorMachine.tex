@@ -8,16 +8,18 @@ Like Percepton but maximizing the margin. Equivalent to\\
 \end{cases}
 \)
 where the margin size is \(\frac{2}{\norm{w}^2}\).\\
-$X^+, X^-$ are separable $\Rightarrow$ Slater conditions $\Rightarrow$ \\
+Slater conditions $\Rightarrow$ \\
 \(\mathcal{D} =
 	\begin{cases}
 		\max_{\alpha} \sum_i \alpha_i - \frac{1}{2}\sum_{i,j}\alpha_i\alpha_jy_iy_jx_i^Tx_j\\
 		\alpha_i\geq 0 \;\forall i\\
+	    \sum_i \alpha_i y_i = 0\\
 	\end{cases}
 		\)\\
 Complementary slackness \(\alpha_i^*h_i(w^*)=0\) so either \(\alpha^*_i = 0\)  or \(x_i\) is a Support Vector
 \subsection*{Soft margin SVM}
-We add a C parameter (C small \(\Rightarrow\) soft):\\
+C small $\implies$ more misclassifications
+C high $\implies$ hard margin\\
 \(\mathcal{P} =
 \begin{cases}
 	\min_{w,w_0, \xi} \frac{\norm{w}^2}{2} + C\sum_i\xi_i\\
@@ -33,11 +35,12 @@ We add a C parameter (C small \(\Rightarrow\) soft):\\
 \end{cases}
 \)\\
 \(\xi_i^{*} = \max(0,1-y_i({w^*}^Tx_i + w_0^*))\)\\
+$w^* = (\sum_i\alpha_i^*y_ix_i)$\\
 $y = sgn\left({w^*}^Tx\right) = sgn\left(\left(\sum_i\alpha_i^*y_ix_i)\right)^Tx_j \right)$\\
 \textbf{Non linear SVM: }$x_i^Tx_j \rightarrow \phi(x_i)^T\phi(x_j) \rightarrow k(x_i,x_j)$%Kernels \(k\) must be simmetric and: \\
 %\(\forall (x_i)_{i = 1:n}\in X^n ,\;\forall c\in\mathbb{R}\) holds that \(c^TKc \geq 0,\; K_{ij} = k(x_i, x_j)\)\\
-\subsection*{Multiclass SVM (ovr)}
-Train a binary classifier for each class (one vs the rest). Then I assign a score $f_c(x)=w_c^Tx$. Predicitons: $c^*=\argmax_c f_c(x)$
+\subsection*{Multiclass SVM (one v. rest)}
+Train a binary classifier for each class (one vs the rest). Then assign a score $f_c(x)=w_c^Tx$. Predicitons: $c^*=\argmax_c f_c(x)$
 \subsection*{Structured SVM}
 Too many class for ovr. $\Psi: X \times Y \rightarrow \mathbbm{R}^{m+d}$ is called Joint feature map
 \( 

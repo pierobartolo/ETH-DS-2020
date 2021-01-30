@@ -14,6 +14,24 @@ $\partial_{\theta}f^{(i)}\doteq\partial_z f^{(i)}(\Phi^{(i-1)}(x),\theta)\vert_{
      }
     \end{algorithm}
 Once we have this we can $\nabla \downarrow$ 
+
+\subsection*{Robinson-Monro}
+Given $f \colon \mathbb{R}^m \times \mathbb{R}^n \rightarrow \mathbb{R}$, $\b{Z}$ random variable over $\mathbb{R}^m$,
+compute $\b{\theta}^*$ s.t. $\mathbb{E}_{\b{Z}}[f(\b{Z}, \b{\theta})] = 0$.
+Iteratively sample $\b{z}^{(k)} \sim \b{Z}$
+and set $\b{\theta}^{(k)} \leftarrow \b{\theta}^{(k-1)} - \eta(k) f(\b{z}_k, \b{\theta}^{(k-1)})$.
+
+For SGD, $f(\b{z}, \b{\theta}) = \nabla_{\theta} \mathcal{L}(y, NN_{\b{\theta}}(x))$.\\
+$z \rightarrow X,y$
+
+
+Thm: R--M (and thus SGD) converges if
+$\eta(k) \geq 0$,
+$\sum_{k=1}^\infty \eta(k) = \infty$,
+$\sum_{k=1}^\infty \eta^2(k) < \infty$
+and some regularity conditions on $\mathbb{E}_{Z}[f(z, \theta)]$ hold.
+
+
 \subsection*{Stocastic Gradient Descent}
 \begin{algorithm}[H]
     \KwResult{optimal $\theta^*$}
@@ -23,6 +41,18 @@ Once we have this we can $\nabla \downarrow$
         $\theta \gets \theta - \eta(k)\nabla_\theta Loss $\;
      }
     \end{algorithm}
-    \textbf{Oss:} $S_k \in D$ and changes at each iteration (Mini Batch)  \\
-    \textbf{Oss:} As long as $\sum_k \eta(k) = \infty$ and $\sum_k \eta^2(k) <  \infty$ the SGD converges\\  
-    \textbf{Advantages over Normal Gradient Descent:} 1) Can handle large Dataset 2) Faster improvment (with regards to time, not iterations) 3) Escapes local minima 4) Lower generalization error\\  
+\textbf{Oss:} $S_k \in D$ and changes at each iteration (Mini Batch)  \\
+\textbf{Oss:} As long as $\sum_k \eta(k) = \infty$ and $\sum_k \eta^2(k) <  \infty$ the SGD converges\\  
+\textbf{Advantages over Normal Gradient Descent:} 1) Can handle large Dataset 2) Faster improvment (w.r.t. time, not iterations) 3) Escapes local minima 4) Lower generalization error\\
+\textbf{Regularization techniques:} 1)Dropout 2)Batch norm. 3)Early stop 4)Weight decay\\
+
+Avoid dying ReLu: 
+\begin{equation*}
+     \begin{cases}
+    \alpha g(z), \text{if}\hspace{2pt} z < 0\\
+    z, \text{if}\hspace{2pt} z \geq 0
+    
+    \end{cases}
+\end{equation*}
+where $g(z)$ is $(\exp{(z)} - 1)$ for ELU and $z$ for LeakyReLU.
+Dropout slows down training (not inference): noisy updates.
